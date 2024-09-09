@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choropleth Map</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script src="choropleth.js"></script>
+</head>
+
+
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">SilkViser</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="index.html" onclick="loadMainContent()">Home</a></li>
+            <li><a href="blockchain_page.html" onclick="loadBlockChainPage()">Block Chain Page</a></li>
+            <li><a href="block_page.html" onclick="loadBlockPage()">Block Page</a></li>
+            <li><a href="transaction_page.html" onclick="loadTransactionPage()">Transaction Page</a></li>
+            <li><a href="address_page.html" onclick="loadAddressPage()">Address Page</a></li>
+            <li class="active"><a href="choropleth_page.html" onclick="loadChoroplethPage()">Choropleth Page</a></li>
+        </ul>
+    </div>
+</nav>
+<h3 class="text-center" style="color:#662506"><strong>Analysing network relay activity Across U.S. States</strong></h3>
+<br>
+<h5 class="center-text">Welcome to the Choropleth map visualization by SilkViser! This interactive map showcases the geographical distribution of blockchain relay nodes throughout the United States, with a unique focus on the frequency of relaying activities by individual IP addresses.  States are color-coded to represent the number of times IP addresses within those states have relayed blockchain data. Darker shades indicate a higher frequency of relaying activity, highlighting areas with more active blockchain participation.</h5>
+
+<br>    <h5 class="center-text"><ul><li class="center-text">Knowing the distribution and frequency of relay nodes helps in assessing the robustness and security of a blockchain network. Areas with dense relay activity might be more resilient to attacks or failures since the presence of multiple nodes can ensure the network stays operational even if some nodes fail.</li>
+<br><li class="center-text">Beyond textual and tabular data, this visual representation offers an intuitive way for users to explore and comprehend network activity. </li></ul></h5>
+<div class="container">
+    <div id="myDataVis">
+    </div>
+</div>
+
+<script>
+    // Initial content load
+    loadMainContent();
+    loadChoroplethPage();
+
+    // Functions to load different content sections
+    function loadMainContent() {
+        document.getElementById('content').innerHTML = '<h1>Welcome to SilkViser</h1><p>This is the main content area.</p>';
+    }
+
+    function loadBlockChainPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Chain Page</h2><p>Here is where the block chain page will be displayed.</p>';
+    }
+
+    function loadBlockPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Page</h2><p>Here is where the block page will be displayed.</p>';
+    }
+
+    function loadTransactionPage() {
+        document.getElementById('content').innerHTML = '<h2>Transaction page</h2><p>Here is where the transaction page will be displayed.</p>';
+    }
+
+    function loadAddressPage() {
+        document.getElementById('content').innerHTML = '<h2>Address Page</h2><p>Here is where the address page will be displayed.</p>';
+    }
+
+    function loadChoroplethPage() {
+        document.getElementById('content').innerHTML = '<h2>Choropleth Page</h2><p style="font-size: 14px; text-align: justify;">Welcome to the Choropleth map visualization of SilkViser!</p>';
+    }
+
+    // function search() {
+    //     // Implement your search functionality here
+    //     alert('Search button clicked!');
+    // }
+</script>
+
+</body>
+</html>

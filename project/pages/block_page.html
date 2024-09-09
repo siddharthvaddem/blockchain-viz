@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<title>Block Information and Transactions</title>
+<style>
+  table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  th, td {
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+  .sortable:after {
+    content: ' ⇅';
+  }
+  th:first-child {
+    cursor: auto;
+  }
+  th:first-child:after {
+    content: '';
+  }
+  #coin_glyph_svg {
+    width: 90%; 
+    height: 200px;
+    margin: auto;
+  }
+
+  #address_hist, #fee_hist, #size_hist {
+    width: 30%; 
+    height: 250px;
+    margin: auto;
+  }
+
+  .tooltip {
+    position: absolute;
+      vertical-align:middle;
+      width: 175px;
+      height: 90px;
+      font-size: 0.8em;
+      background: white;
+      border-radius: 5px;
+      opacity: 0;
+      border: 0.5px solid black;
+      font-weight: 650;
+      padding: 5px;
+  }
+
+  a:hover {
+    cursor: pointer;
+}
+
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+</style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">SilkViser</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="index.html" onclick="loadMainContent()">Home</a></li>
+            <li><a href="blockchain_page.html" onclick="loadBlockChainPage()">Block Chain Page</a></li>
+            <li class="active"><a href="block_page.html" onclick="loadBlockPage()">Block Page</a></li>
+            <li><a href="transaction_page.html" onclick="loadTransactionPage()">Transaction Page</a></li>
+            <li><a href="address_page.html" onclick="loadAddressPage()">Address Page</a></li>
+            <li><a href="choropleth_page.html" onclick="loadChoroplethPage()">Choropleth Page</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Search Input -->
+<div class="container" >
+    <div class="row">
+        <div class="col-xs-8">
+            <input type="text" id="searchInput" class="form-control" placeholder="Enter block height or block/transaction/address hash">
+        </div>
+        <div class="col-xs-4">
+            <button class="btn btn-primary" onclick="search()">Search</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initial content load
+    loadMainContent();
+
+    // Functions to load different content sections
+    function loadMainContent() {
+        document.getElementById('content').innerHTML = '<h1>Welcome to SilkViser</h1><p>This is the main content area.</p>';
+    }
+
+    function loadBlockChainPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Chain Page</h2><p>Here is where the block chain page will be displayed.</p>';
+    }
+
+    function loadBlockPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Page</h2><p>Here is where the block page will be displayed.</p>';
+    }
+
+    function loadTransactionPage() {
+        document.getElementById('content').innerHTML = '<h2>Transaction page</h2><p>Here is where the transaction page will be displayed.</p>';
+    }
+
+    function loadAddressPage() {
+        document.getElementById('content').innerHTML = '<h2>Address Page</h2><p>Here is where the address page will be displayed.</p>';
+    }
+
+    function loadChoroplethPage() {
+        document.getElementById('content').innerHTML = '<h2>Choropleth Page</h2><p>Here is where the choropleth page will be displayed.</p>';
+    }
+    
+</script>
+
+  <!-- <div style="width: 90%; margin-left: auto; margin-top: 10vh;">
+    <button onclick="fetchBlockData()">Search</button>
+    <input type="text" id="searchInput" value="000000000000000000021e25d6226b8c40b1016c134838ee1014ef258e9c5da3" placeholder="Enter block hash or height">
+    
+  </div> -->
+  <!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none;">
+  <div class="spinner"></div>
+</div>
+
+<h2 style="width: 90%; margin-left: auto;margin-top: 10vh;">Block Information</h2>
+<table id="blockInfoTable">
+  <tbody>
+    <tr><th>Block Hash</th><td id="blockHash"></td></tr>
+    <tr><th>Time</th><td id="blockTime"></td></tr>
+    <tr><th>Height</th><td id="blockHeight"></td></tr>
+    <tr><th>Block Size</th><td id="blockSize"></td></tr>
+    <tr><th>Relayed By</th><td id="blockRelayedBy"></td></tr>
+  </tbody>
+</table>
+<!-- <h1 style="width: 90%; margin-left: auto;margin-top: 10vh; color: red;"> >Insert coin glyphs and bar charts here<</h1> -->
+<h2 style="width: 90%; margin-left: auto;margin-top: 10vh;">Visualization of Block Transactions</h2>
+
+<div id="tooltip" class="tooltip"></div>
+    <div id="coin_glyphs" style="width: 90%; margin-left: auto;">
+        <svg id="coin_glyph_svg"></svg>
+    </div>
+    <div id="block_page_histograms" style="width: 90%; margin-left: auto;">
+      <svg id="address_hist"></svg>
+      <svg id="fee_hist"></svg>
+      <svg id="size_hist"></svg>
+    </div>
+<h2 style="width: 90%; margin-left: auto;margin-top: 10vh;">List of Block Transactions</h2>
+<table id="transactionsTable">
+  <thead>
+    <tr>
+      <th>TxHash</th>
+      <th class="sortable">In_addr</th>
+      <th class="sortable">Out_addr</th>
+      <th class="sortable">TxSize (bytes)</th>
+      <th class="sortable">TxFee</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+<script src="block_page.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+</body>
+</html>

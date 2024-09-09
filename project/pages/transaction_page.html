@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<title>Transaction information</title>
+<style>
+  table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  th, td {
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+
+  #loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+  
+</style>
+</head>
+<body>
+  <div id="loadingOverlay" style="display: none;">
+    <div class="spinner"></div>
+  </div>
+  
+  
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">SilkViser</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="index.html" onclick="loadMainContent()">Home</a></li>
+            <li><a href="blockchain_page.html" onclick="loadBlockChainPage()">Block Chain Page</a></li>
+            <li><a href="block_page.html" onclick="loadBlockPage()">Block Page</a></li>
+            <li class="active"><a href="transaction_page.html" onclick="loadTransactionPage()">Transaction Page</a></li>
+            <li><a href="address_page.html" onclick="loadAddressPage()">Address Page</a></li>
+            <li><a href="choropleth_page.html" onclick="loadChoroplethPage()">Choropleth Page</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Search Input -->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <input type="text" id="searchInput" class="form-control" placeholder="Enter block height or block/transaction/address hash">
+        </div>
+        <div class="col-xs-4">
+            <button class="btn btn-primary" onclick="search()">Search</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initial content load
+    loadMainContent();
+
+    // Functions to load different content sections
+    function loadMainContent() {
+        document.getElementById('content').innerHTML = '<h1>Welcome to SilkViser</h1><p>This is the main content area.</p>';
+    }
+
+    function loadBlockChainPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Chain Page</h2><p>Here is where the block chain page will be displayed.</p>';
+    }
+
+    function loadBlockPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Page</h2><p>Here is where the block page will be displayed.</p>';
+    }
+
+    function loadTransactionPage() {
+        document.getElementById('content').innerHTML = '<h2>Transaction page</h2><p>Here is where the transaction page will be displayed.</p>';
+    }
+
+    function loadAddressPage() {
+        document.getElementById('content').innerHTML = '<h2>Address Page</h2><p>Here is where the address page will be displayed.</p>';
+    }
+
+    function loadChoroplethPage() {
+        document.getElementById('content').innerHTML = '<h2>Choropleth Page</h2><p>Here is where the choropleth page will be displayed.</p>';
+    }
+
+    // function search() {
+    //     // Implement your search functionality here
+    //     alert('Search button clicked!');
+    // }
+</script>
+
+  <!-- <div style="width: 90%; margin-left: auto; margin-top: 10vh;">
+    <button onclick="fetchTransactionData()">Search</button>
+    <input type="text" id="searchInput" value="b05929ca3e1b216f683d6d57e70c14694a913dbc49360874ec4ba307e9dc8458" placeholder="Enter transaction hash">
+    
+  </div> -->
+<h2 style="width: 90%; margin-left: auto;margin-top: 10vh;">Transaction information</h2>
+<table id="transactionsInfoTable">
+    <tbody>
+        <tr><th>Transaction Hash</th><td id="transactionHash"></td></tr>
+        <tr><th>Block Height</th><td id="blockHeight"></td></tr>
+        <tr><th>Transaction Time</th><td id="transactionTime"></td></tr>
+        <tr><th>Transaction Size</th><td id="transactionSize"></td></tr>
+        <tr><th>Transaction Fee</th><td id="transactionFee"></td></tr>
+    </tbody>
+</table>
+<div style="margin-bottom: 5vh;"></div>
+<div id="sankeyChart" style="margin-left: auto;margin-right: auto; max-width: 100%;">
+  <svg width="100%" height="500" id="sankey_svg"></svg>
+</div>
+<h2 style="width: 90%; margin-left: auto;margin-top: 10vh;">List of Incoming and Outgoing addresses</h2>
+<div style="display: flex; width: 90%; margin: auto; margin-top: 10vh;">
+    <div style="flex: 1; margin-right: 10px;">
+      <table id="inputAddresses">
+        <thead>
+          <tr>
+            <th>Input Addresses</th>
+            <th>Value (BTC)</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div style="flex: 1;">
+      <table id="outputAddresses">
+        <thead>
+          <tr>
+            <th>Output Addresses</th>
+            <th>Value (BTC)</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script 
+    src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js">
+</script>
+<script src="transaction_page.js"></script>
+</body>
+</html>

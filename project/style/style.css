@@ -1,0 +1,123 @@
+#imageContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.blockItem {
+    width: calc(16.666% - 60px);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.blockImage {
+    width: 100%;
+    height: auto;
+}
+
+.imageContent {
+    position: relative;
+}
+
+.detailsContainer {
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.textOverlay {
+    position: absolute;
+    top:70px;
+    bottom: 20px;
+    left: 10px;
+    width: calc(100% - 20px);
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 12px;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    left: -20%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+}
+
+.arrow span {
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+
+.squareBoxLeft,
+.squareBoxRight {
+    width: 42%; 
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #000;
+    font-size: 12px;
+}
+
+.squareBoxLeft {
+    text-align: center;
+    top: 10px;
+    left: 10px;
+}
+
+.squareBoxRight {
+    text-align: center;
+    top: 10px;
+    right: 10px;
+}
+
+#DoubleBarChart svg {
+    width: 90%;
+    height: 100%;
+    vertical-align: bottom;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 45px;
+    padding: 2px;
+    font: 12px;
+    background:white;
+    border: 2px solid black;
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+.center-text {
+    text-align: justify;
+    margin: 0 auto; 
+    max-width: 1200px; 
+}

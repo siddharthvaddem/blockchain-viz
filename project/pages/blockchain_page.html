@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="blockchain_page.js"></script>
+</head>
+
+
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">SilkViser</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="index.html" onclick="loadMainContent()">Home</a></li>
+            <li class="active"><a href="blockchain_page.html" onclick="loadBlockChainPage()">Block Chain Page</a></li>
+            <li><a href="block_page.html" onclick="loadBlockPage()">Block Page</a></li>
+            <li><a href="transaction_page.html" onclick="loadTransactionPage()">Transaction Page</a></li>
+            <li><a href="address_page.html" onclick="loadAddressPage()">Address Page</a></li>
+            <li><a href="choropleth_page.html" onclick="loadChoroplethPage()">Choropleth Page</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Search Input -->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <input type="text" id="searchInput" class="form-control" placeholder="Enter block height or block/transaction/address hash">
+        </div>
+        <div class="col-xs-4">
+            <button class="btn btn-primary" onclick="search()">Search</button>
+        </div>
+    </div>
+</div>
+
+<!-- <input type="text" id="searchInput" placeholder="Enter block, transaction, or address hash">
+<button onclick="search()">Search</button> -->
+
+<div id="imageContainer" style="margin-top:10vh;"></div>
+<div id="DoubleBarChart"></div>
+
+<script>
+    // Initial content load
+    loadMainContent();
+
+    // Functions to load different content sections
+    function loadMainContent() {
+        document.getElementById('content').innerHTML = '<h1>Welcome to SilkViser</h1><p>This is the main content area.</p>';
+    }
+
+    function loadBlockChainPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Chain Page</h2><p>Here is where the block chain page will be displayed.</p>';
+    }
+
+    function loadBlockPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Page</h2><p>Here is where the block page will be displayed.</p>';
+    }
+
+    function loadTransactionPage() {
+        document.getElementById('content').innerHTML = '<h2>Transaction page</h2><p>Here is where the transaction page will be displayed.</p>';
+    }
+
+    function loadAddressPage() {
+        document.getElementById('content').innerHTML = '<h2>Address Page</h2><p>Here is where the address page will be displayed.</p>';
+    }
+
+    function loadChoroplethPage() {
+        document.getElementById('content').innerHTML = '<h2>Choropleth Page</h2><p>Here is where the choropleth page will be displayed.</p>';
+    }
+
+    // function search() {
+    //     // Implement your search functionality here
+    //     alert('Search button clicked!');
+    // }
+</script>
+<script>
+    var w = window.innerWidth;
+var h = window.innerHeight;
+console.log(w,h)
+if(w<1500)
+    document.body.style.zoom = "80%";
+else
+    document.body.style.zoom=" 100%"
+  </script>
+
+</body>
+</html>

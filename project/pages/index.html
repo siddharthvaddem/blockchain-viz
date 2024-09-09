@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">SilkViser</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html" onclick="loadMainContent()">Home</a></li>
+            <li><a href="blockchain_page.html" onclick="loadBlockChainPage()">Block Chain Page</a></li>
+            <li><a href="block_page.html" onclick="loadBlockPage()">Block Page</a></li>
+            <li><a href="transaction_page.html" onclick="loadTransactionPage()">Transaction Page</a></li>
+            <li><a href="address_page.html" onclick="loadAddressPage()">Address Page</a></li>
+            <li><a href="choropleth_page.html" onclick="loadChoroplethPage()">Choropleth Page</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Search Input -->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <input type="text" id="searchInput" class="form-control" placeholder="Enter block height or block/transaction/address hash">
+        </div>
+        <div class="col-xs-4">
+            <button class="btn btn-primary" onclick="search()">Search</button>
+        </div>
+    </div>
+</div>
+
+<!-- Content Area -->
+<div class="container">
+    <div id="content"></div>
+</div>
+<!-- 
+<script src="blockchain_page.js"></script> -->
+<script>
+    // Initial content load
+    loadMainContent();
+
+    // Functions to load different content sections
+    function loadMainContent() {
+        document.getElementById('content').innerHTML = `<br><h1>Welcome to SilkViser</h1>
+        <p style="font-size: 14px; text-align: justify;">SilkViser is a new online cryptocurrency transaction data viewing tool. Guided by detailed scenario and
+            requirement analyses, we create a series of well thought out visualization
+            designs, such as paper ledger-inspired block and blockchain visual
+            izations and ancient copper coin-inspired transaction visualizations, in a heirarchial manner, 
+            to help you understand cryptocurrency transaction mechanisms and
+            recognize advanced transaction information. We also provide a set of
+            lightweight interactions to facilitate easy and free data exploration.
+        </p>
+        <br>
+        <h3>About the Bitcoin Blockchain</h3>
+        <p style="font-size: 14px; text-align: justify;">The Bitcoin blockchain isn\'t just a ledger; it\'s a digital revolution in motion. Imagine a decentralized network, tirelessly churning out blocks of verified transactions, each one linked to the next like a digital chain of trust. This is the backbone of Bitcoin, a currency unbound by borders or intermediaries, powered by cryptographic wizardry and fueled by the collective efforts of miners worldwide. It\'s not just money; it\'s a symphony of technology, seamlessly orchestrating peer-to-peer transactions with the precision of a maestro.</p>
+        <p style="font-size: 14px; text-align: justify;">But the allure of Bitcoin\'s blockchain goes beyond finance. It\'s the promise of a new era, where transparency reigns supreme and trust is built into the very fabric of the digital world. From supply chains to voting systems, the potential applications are as boundless as the imagination. It\'s a journey into the unknown, where every block tells a story of innovation and every transaction is a testament to the power of decentralized networks. Welcome to the future—welcome to the Bitcoin blockchain revolution.</p>
+        <h3>Navigation</h3>
+        <p><b>Block Chain Page:</b> provides an overview of the blockchain structure, allowing you to explore individual blocks and their details.
+        <br><b>Block Page:</b> enables you to delve deeper into specific blocks, examining transaction details and related metadata.
+        <br><b>Transaction Page:</b> offers a detailed view of individual transactions, including inputs, outputs, and associated metadata.
+        <br><b>Address Page:</b> allows you to explore transaction data associated with specific cryptocurrency addresses, facilitating analysis of transaction patterns and behaviors.
+        <br><b>Choropleth Page:</b> presents geographical insights by visualizing relaying network activity on a map, highlighting the count of nodes that relayed blockchain data to the rest of the network, specfically for US region.</p>
+        <p>Additionally, you can leverage the search bar above by entering keywords to directly access the web page that corresponds to a block, a transaction, or an address.</p>
+        `;
+    }
+
+    function loadBlockChainPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Chain Page</h2><p>Here is where the block chain page will be displayed.</p>';
+    }
+
+    function loadBlockPage() {
+        document.getElementById('content').innerHTML = '<h2>Block Page</h2><p>Here is where the block page will be displayed.</p>';
+    }
+
+    function loadTransactionPage() {
+        document.getElementById('content').innerHTML = '<h2>Transaction page</h2><p>Here is where the transaction page will be displayed.</p>';
+    }
+
+    function loadAddressPage() {
+        document.getElementById('content').innerHTML = '<h2>Address Page</h2><p>Here is where the address page will be displayed.</p>';
+    }
+
+    function loadChoroplethPage() {
+        document.getElementById('content').innerHTML = '<h2>Choropleth Page</h2><p>Here is where the choropleth page will be displayed.</p>';
+    }
+
+    
+    function search() {
+    var userInput = document.getElementById('searchInput').value;
+    var apiUrl = 'https://blockchain.info/raw';
+
+
+    if (!isNaN(userInput)) {
+       
+        fetch('../data/blockDetails.jsonl')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data from blockDetails.jsonl');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const lines = data.trim().split('\n');
+                const blocks = lines.map(line => JSON.parse(line));
+
+                const matchingBlock = blocks.find(block => block.height === parseInt(userInput));
+                console.log(matchingBlock)
+                if (matchingBlock) {
+                    window.location.href = `/project/pages/block_page.html?hash=${encodeURIComponent(matchingBlock.hash)}`;
+                } else {
+                    window.location.href = '/project/pages/error.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                window.location.href = '/project/pages/error.html';
+            });
+
+        return;
+    }
+    fetch(apiUrl + 'block/' + userInput)
+        .then(response => {
+            if (response.ok) {
+                window.location.href = `/project/pages/block_page.html?hash=${encodeURIComponent(userInput)}`
+            } else {
+                return fetch(apiUrl + 'tx/' + userInput)
+                    .then(response => {
+                        console.log(response)
+                        if (response.ok) {
+                            window.location.href = `/project/pages/transaction_page.html?hash=${encodeURIComponent(userInput)}`
+                        } else {
+                            return fetch(apiUrl + 'addr/' + userInput)
+                                .then(response => {
+                                    if (response.ok) {
+                                        window.location.href = `/project/pages/address_page.html?hash=${encodeURIComponent(userInput)}`
+                                    } else {
+                                        window.location.href = '/error.html'; 
+                                    }
+                                });
+                        }
+                    });
+            }
+        })
+        .catch(error => {
+            window.location.href = '/error';
+        });
+}
+
+</script>
+
+</body>
+</html>
